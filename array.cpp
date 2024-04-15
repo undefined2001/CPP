@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <array>
 using namespace std;
 int main()
 {
