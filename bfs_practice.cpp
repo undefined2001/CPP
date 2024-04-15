@@ -7,7 +7,8 @@ class Graph
     std::vector<int> *m_Graph;
 
 public:
-    Graph(int);
+    Graph(int V = 0); // Default argument for V
+    ~Graph();
     void addEdge(int, int);
     void printGraph();
     void bfs(int);
@@ -23,7 +24,6 @@ void Graph::addEdge(int u, int v)
 
 void Graph::bfs(int source = 1)
 {
-    
 }
 
 void Graph::printGraph()
@@ -31,18 +31,22 @@ void Graph::printGraph()
     for (int i = 1; i < m_V; i++)
     {
         std::cout << i << ": ";
-        std::vector<int>::iterator it;
-        for (it = m_Graph[i].begin(); it != m_Graph[i].end(); it++)
+        for (int j : m_Graph[i])
         {
-            std::cout << (*it) << " ";
+            std::cout << j << " ";
         }
         std::cout << std::endl;
     }
 }
 
+Graph::~Graph()
+{
+    delete[] m_Graph;
+}
+
 int main()
 {
-    Graph g(5);
+    Graph g(5); // Provide the value of V
     g.addEdge(1, 2);
     g.addEdge(1, 3);
     g.printGraph();
