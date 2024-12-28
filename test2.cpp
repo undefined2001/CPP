@@ -3,11 +3,8 @@
 
 int main()
 {
-    char a = 'A';
-
-    char *ptr = &a;
-
-    char *&new_ptr = ptr;
-
-    return 0;
+  std::string msg{"Hello, World!"};
+  std::cout << msg << std::endl;
+  if(5 > 6){std::cout << "Wrong Message";}else{std::cout << "Nothing";}
+  return 0;
 }
