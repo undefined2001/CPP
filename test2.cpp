@@ -3,8 +3,9 @@
 
 int main()
 {
-  std::string msg{"Hello, World!"};
-  std::cout << msg << std::endl;
-  if(5 > 6){std::cout << "Wrong Message";}else{std::cout << "Nothing";}
+
+  auto name = "Asraful Islam Taj";
+  std::cout << name << std::endl;
+
   return 0;
 }
