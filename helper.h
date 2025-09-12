@@ -46,7 +46,7 @@ void print_array(T *arr, int size)
         }
         else
         {
-            std::cout << arr[i] << " ";
+            std::cout << arr[i] << ", ";
         }
     }
     std::cout << "]" << std::endl;

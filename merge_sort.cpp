@@ -1,102 +1,56 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <iostream>
 
-/*
-This Function is for comparing two sub array and merging them into
-one new sorted array and finally return the array
-*/
-void merge(int arr[], int left, int middle, int right)
+using std::cout;
+using std::endl;
+using std::vector;
+
+void merge(vector<int> &vec, int start, int mid, int end)
 {
-    int temparray[right];
-    int i = left, j = middle + 1, k = left;
+    // Temporary arrays
+    vector<int> left(vec.begin() + start, vec.begin() + mid + 1);
+    vector<int> right(vec.begin() + mid + 1, vec.begin() + end + 1);
 
-    /*
-    This loop will continue until one of two array is ended
-    To be specific the smallest one also the sorting part is
-    happening inside this loop
-    */
-    while (i <= middle && j <= right)
+    int i = 0, j = 0, k = start;
+
+    // Merge the two halves
+    while (i < (int)left.size() && j < (int)right.size())
     {
-        if (arr[i] <= arr[j])
-        {
-            temparray[k] = arr[i];
-            i++;
-            k++;
-        }
+        if (left[i] <= right[j])
+            vec[k++] = left[i++];
         else
-        {
-            temparray[k] = arr[j];
-            k++;
-            j++;
-        }
+            vec[k++] = right[j++];
     }
 
-    /*
-    loop will continue if the left array is greater and there are some value left
-    */
-    while (i <= middle)
-    {
-        temparray[k] = arr[i];
-        i++;
-        k++;
-    }
+    // Copy leftovers
+    while (i < (int)left.size())
+        vec[k++] = left[i++];
 
-    /*
-    loop will continue if the right array is greater and there are some value left
-    */
-    while (j <= right)
-    {
-        temparray[k] = arr[j];
-        j++;
-        k++;
-    }
-    // This is for copying the elements form temporary sorted array to the permanet one
-    for (int count = left; count <= right; count++)
-    {
-        arr[count] = temparray[count];
-    }
+    while (j < (int)right.size())
+        vec[k++] = right[j++];
 }
 
-// This function calling the margeSort Algorithm Recursively
-
-void megreSort(int arr[], int left, int right)
+void merge_sort(vector<int> &vec, int start, int end)
 {
-    if (left >= right)
-    {
+    if (start >= end)
         return;
-    }
-    int middle = (left + right) / 2;
-    megreSort(arr, left, middle);
-    megreSort(arr, middle + 1, right);
-    merge(arr, left, middle, right);
-}
 
-// This is an Utility function to print a Array
+    int mid = start + (end - start) / 2;
 
-void printArray(int arr[], int size)
-{
-    for (int i = 0; i < size; i++)
-    {
-        std::cout << arr[i] << " ";
-    }
-    std::cout << std::endl;
+    merge_sort(vec, start, mid);
+    merge_sort(vec, mid + 1, end);
+    merge(vec, start, mid, end);
 }
 
 int main()
 {
-    int size;
-    std::cout << "Enter the Number of Elements You Want: ";
-    std::cin >> size;
-    // int arr[size] = {30, 25, 40, 50, 10, 5};
-    int arr[size];
-    std::cout << "Enter the Elements separated by space: ";
-    for (int i = 0; i < size; i++)
-    {
-        std::cin >> arr[i];
-    }
+    vector<int> arr = {5, 2, 9, 1, 5, 6};
 
-    std::cout << "Before Sort: \n";
-    printArray(arr, size);
-    megreSort(arr, 0, size - 1);
-    std::cout << "After Sort: \n";
-    printArray(arr, size);
+    merge_sort(arr, 0, arr.size() - 1);
+
+    for (int num : arr)
+        cout << num << " ";
+    cout << endl;
+
+    return 0;
 }
