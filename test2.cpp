@@ -1,81 +1,46 @@
+#include <vector>
 #include <iostream>
+using namespace std;
 
-class Array
+void merge(vector<int> &vec, int start, int mid, int end)
 {
-private:
-    int *data;
-    int size;
-    int len;
+    vector<int> left(vec.begin() + start, vec.begin() + mid + 1);
+    vector<int> right(vec.begin() + mid, vec.begin() + end + 1);
 
-public:
-    Array() : data(nullptr), size(0), len(0) {}
+    int i = 0, j = 0, k = start;
 
-    Array(int size) : data(new int[size]), size(size), len(0) {}
-
-    // Copy constructor (deep copy)
-    Array(const Array &other) : size(other.size), len(other.len)
+    while (i < (int)left.size() && j < (int)right.size())
     {
-        data = new int[size];
-        for (int i = 0; i < size; i++)
-        {
-            data[i] = other.data[i];
-        }
+        if (left[i] <= right[j])
+            vec[k++] = left[i++];
+        else
+            vec[k++] = right[j++];
     }
 
-    // Copy assignment operator (deep copy)
-    Array &operator=(const Array &other)
-    {
-        if (this == &other) return *this; // self-assignment check
+    while (i < (int)left.size())
+        vec[k++] = left[i++];
+    while (j < (int)right.size())
+        vec[k++] = right[j++];
+}
 
-        delete[] data;
+void merge_sort(vector<int> &vec, int start, int end)
+{
+    if (start >= end)
+        return;
 
-        size = other.size;
-        len = other.len;
-        data = new int[size];
-        for (int i = 0; i < size; i++)
-        {
-            data[i] = other.data[i];
-        }
-        return *this;
-    }
-
-    int length() const { return size; }
-
-    int at(int idx) const { return data[idx]; }
-
-    void add(int idx, int a) { data[idx] = a; }
-
-    ~Array()
-    {
-        delete[] data;
-        data = nullptr;
-        size = 0;
-        len = 0;
-    }
-};
+    int mid = start + (end - start) / 2;
+    merge_sort(vec, start, mid);
+    merge_sort(vec, mid + 1, end);
+    merge(vec, start, mid, end);
+}
 
 int main()
 {
-    Array a(5);
-    for (int i = 0; i < a.length(); i++)
-    {
-        a.add(i, i * i);
-    }
+    vector<int> vec = {90, 80, 70, 75, 100};
 
-    Array b = a; // deep copy happens here
-    b.add(3, 100);
+    merge_sort(vec, 0, vec.size() - 1); // inclusive end
 
-    std::cout << "Printing A array" << std::endl; 
-    for (int i = 0; i < a.length(); i++)
-    {
-        std::cout << a.at(i) << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Printing B Array" << std::endl;
-    for (int i = 0; i < b.length(); i++)
-    {
-        std::cout << b.at(i) << " ";
-    }
-    std::cout << std::endl;
+    for (int i : vec)
+        cout << i << " ";
+    cout << endl;
 }

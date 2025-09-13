@@ -1,56 +1,54 @@
-#include <vector>
 #include <iostream>
+#include <vector>
 
-using std::cout;
-using std::endl;
-using std::vector;
-
-void merge(vector<int> &vec, int start, int mid, int end)
+void merge(std::vector<int> &vec, int left, int mid, int right)
 {
-    // Temporary arrays
-    vector<int> left(vec.begin() + start, vec.begin() + mid + 1);
-    vector<int> right(vec.begin() + mid + 1, vec.begin() + end + 1);
+    std::vector<int> lvec(vec.begin() + left, vec.begin() + mid + 1);
+    std::vector<int> rvec(vec.begin() + mid + 1, vec.begin() + right + 1);
 
-    int i = 0, j = 0, k = start;
+    lvec.push_back(INT_MAX);
+    rvec.push_back(INT_MAX);
 
-    // Merge the two halves
-    while (i < (int)left.size() && j < (int)right.size())
+    int i{0}, j{0}, k{left};
+    while (k <= right)
     {
-        if (left[i] <= right[j])
-            vec[k++] = left[i++];
+        if (lvec[i] <= rvec[j])
+        {
+            vec[k++] = lvec[i++];
+        }
         else
-            vec[k++] = right[j++];
+        {
+            vec[k++] = rvec[j++];
+        }
     }
-
-    // Copy leftovers
-    while (i < (int)left.size())
-        vec[k++] = left[i++];
-
-    while (j < (int)right.size())
-        vec[k++] = right[j++];
 }
 
-void merge_sort(vector<int> &vec, int start, int end)
+void merge_sort(std::vector<int> &vec, int start, int end)
 {
     if (start >= end)
         return;
 
     int mid = start + (end - start) / 2;
-
     merge_sort(vec, start, mid);
     merge_sort(vec, mid + 1, end);
     merge(vec, start, mid, end);
 }
 
+void print_vector(std::vector<int> &vec)
+{
+    std::cout << "[";
+    for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
+    {
+        std::cout << *it << ((it == vec.end() - 1) ? "" : ", ");
+    }
+    std::cout << "]" << std::endl;
+}
+
 int main()
 {
-    vector<int> arr = {5, 2, 9, 1, 5, 6};
-
-    merge_sort(arr, 0, arr.size() - 1);
-
-    for (int num : arr)
-        cout << num << " ";
-    cout << endl;
+    std::vector<int> vec{47, 52, 6, 9, 79, 13};
+    merge_sort(vec, 0, vec.size() - 1);
+    print_vector(vec);
 
     return 0;
 }
